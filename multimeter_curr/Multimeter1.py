@@ -99,10 +99,23 @@ class MultimeterController(QWidget):
         if not self.init_dmms:
             self.multimeters[0].write('CONF:CURR:DC')
             self.multimeters[1].write('CONF:CURR:DC')
+            
+            self.multimeters[0].write('SAMP:COUN 1')
+            self.multimeters[1].write('SAMP:COUN 1')
+            
+            self.multimeters[0].write('TRIG:SOUR EXT')
+            self.multimeters[1].write('TRIG:SOUR EXT')
+            
+            self.multimeters[0].write('TRIG:COUN INF')
+            self.multimeters[1].write('TRIG:COUN INF')
+            
+            self.multimeters[0].write('INIT:IMM')
+            self.multimeters[1].write('INIT:IMM')
+            
             self.init_dmms = True
         #read current from dmms
-        curr1 = float(self.multimeters[0].query('READ?'))
-        curr2 = float(self.multimeters[1].query('READ?'))
+        curr1 = float(self.multimeters[0].query('R? 1')[4:-1])
+        curr2 = float(self.multimeters[1].query('R? 1')[4:-1])
         return (curr1,curr2)
 
     def stop_measurement(self):
